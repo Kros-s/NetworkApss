@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     long int *ap;
     ap=(long int*)buffer;
-    sprintf(buffer+4,"broadcast \"hola\"");
+    sprintf(buffer+4,"broadcast \"Hola\"");
     *ap=htonl(strlen(buffer+4));
     //EL PROBLEMA ES QUE DETECTA COMO CARACTER VACIO LOS 3 PRIMEROS 000
     printf(" %x%x%x%x ",(int)buffer[0],(int)buffer[1],(int)buffer[2],buffer[3]);
@@ -56,9 +56,11 @@ int main(int argc, char *argv[])
     //STRLEN SOLO DETECTA A PARTIR DEL 4TO BYTE X ESO NO FURULABA
     if(send(s,buffer,strlen(buffer+4)+5,0)==-1)
         perror("EOOR NOT SEND");
-    if((recv(s,buffer_in,sizeof(buffer_in),0))!= -1)
+    int help;
+    if((help=recv(s,buffer_in,sizeof(buffer_in),0))== -1)
         perror("ERROR AL RECIBIR");
-    printf("\n\nDATA : \n%s",buffer_in);
+    buffer_in[help]=0;
+    printf("\n\nDATA : \n%s",buffer_in+4);
 
     WSACleanup();
 
