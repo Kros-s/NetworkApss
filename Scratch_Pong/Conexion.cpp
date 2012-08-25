@@ -22,7 +22,24 @@ void Conexion::Prepare(){
     //ESTABLECIENDO CONEXION LOCAL
     if(connect(Clocal.s,(const sockaddr*)&Clocal.data,sizeof(Clocal.data))!=0)
         perror("NO CONECTION ESTABLISHED");
+    int help;
+    // PERFECTO YA RECIBO DATOS :D
+    // VEAMOS AHORA EL SEGUNDO SOCKET
+    if((help=recv(Clocal.s,Clocal.buffer_in,sizeof(Clocal.buffer_in),0))== -1)
+        perror("ERROR AL RECIBIR");
+    Clocal.buffer_in[help]=0;
+    printf("\n\nDATA : \n%s",Clocal.buffer_in+4);
+
+
+
+    /*---INTENTAREMOS PRIMERO CON UN SOCKET LOCAL HACIENDO Q SE DUPLIQUE W */
     //ESTABLECIENDO CONEXION REMOTA
+
     if(connect(Cremoto.s,(const sockaddr*)&Cremoto.data,sizeof(Cremoto.data))!=0)
         perror("NO CONECTION ESTABLISHED");
+    if((help=recv(Cremoto.s,Cremoto.buffer_in,sizeof(Cremoto.buffer_in),0))== -1)
+        perror("ERROR AL RECIBIR");
+    Cremoto.buffer_in[help]=0;
+    printf("\n\nDATA : \n%s",Cremoto.buffer_in+4);
+
 }
