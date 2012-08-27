@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
         printf("IP LOCAL: %s", Clocal.ipdest);
         Clocal.port = atoi(argv[2]);
         memcpy(Cremoto.ipdest,argv[3],100);
-        printf("IP LOCAL: %s", Cremoto.ipdest);
-        Clocal.port = atoi(argv[4]);
+        printf("IP REMOTA: %s", Cremoto.ipdest);
+        Cremoto.port = atoi(argv[4]);
     }
     else{
         //MEDIANTE PROGRAMA
