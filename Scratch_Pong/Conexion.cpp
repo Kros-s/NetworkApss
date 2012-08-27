@@ -32,10 +32,10 @@ void Conexion::Prepare(){
     while(1){
 
 
-    if((help=recv(Clocal.s,Clocal.buffer_in,sizeof(Clocal.buffer_in),0))== -1)
-        perror("ERROR AL RECIBIR");
-    Clocal.buffer_in[help]=0;
-    printf("\n\nDATA LOCAL  : \n%s",Clocal.buffer_in+4);
+    //if((help=recv(Clocal.s,Clocal.buffer_in,sizeof(Clocal.buffer_in),0))== -1)
+      //  perror("ERROR AL RECIBIR");
+    //Clocal.buffer_in[help]=0;
+    //printf("\n\nDATA LOCAL  : \n%s",Clocal.buffer_in+4);
 
     // PERFECTO YA RECIBO DATOS :D
     // VEAMOS AHORA EL SEGUNDO SOCKET
@@ -43,14 +43,14 @@ void Conexion::Prepare(){
     //ESTABLECIENDO CONEXION REMOTA
 
 
-    //if((help=recv(Cremoto.s,Cremoto.buffer_in,sizeof(Cremoto.buffer_in),0))== -1)
-      //  perror("ERROR AL RECIBIR");
-    //Cremoto.buffer_in[help]=0;
-    //printf("\n\nDATA REMOTO : \n%s",Cremoto.buffer_in+4);
+    if((help=recv(Cremoto.s,Cremoto.buffer_in,sizeof(Cremoto.buffer_in),0))== -1)
+        perror("ERROR AL RECIBIR");
+    Cremoto.buffer_in[help]=0;
+    printf("\n\nDATA REMOTO : \n%s",Cremoto.buffer_in+4);
     //ENVIANDO x VIA REMOTA
-    memcpy(Cremoto.buffer,Clocal.buffer_in,1500);
+    memcpy(Clocal.buffer,Cremoto.buffer_in,1500);
     printf("\n\nDATA ENVIO  : \n%s",Cremoto.buffer+4);
-    if(send(Cremoto.s,Cremoto.buffer,strlen(Cremoto.buffer+4)+5,0)==-1)
+    if(send(Clocal.s,Clocal.buffer,strlen(Clocal.buffer+4)+5,0)==-1)
             perror("EOOR NOT SEND");
     }
 }
