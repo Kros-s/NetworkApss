@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     sprintf(buffer+4,"broadcast \"Hola\"");
     *ap=htonl(strlen(buffer+4));
     //EL PROBLEMA ES QUE DETECTA COMO CARACTER VACIO LOS 3 PRIMEROS 000
-    printf(" %x%x%x%x ",(int)buffer[0],(int)buffer[1],(int)buffer[2],buffer[3]);
-    printf("%s",buffer+4);
+    //printf(" %x%x%x%x ",(int)buffer[0],(int)buffer[1],(int)buffer[2],buffer[3]);
+    //    printf("%s",buffer+4);
     /////////////INICIALIZANDO SOCKET
     if(WSAStartup(VER,&wsaData)!=0)
         perror("ERROR AL CARGAR LIBRERIAS");
@@ -48,24 +48,32 @@ int main(int argc, char *argv[])
     printf("SOCKET %d \n ",s);
     data.sin_family=AF_INET;
     data.sin_port=htons(port);
-    //SOLO CON IP
     data.sin_addr.s_addr = inet_addr(ipdest);
     //ESTABLECIENDO CONEXION
     if(connect(s,(const sockaddr*)&data,sizeof(data))!=0)
         perror("NO CONECTION ESTABLISHED");
     //STRLEN SOLO DETECTA A PARTIR DEL 4TO BYTE X ESO NO FURULABA
-    if(send(s,buffer,strlen(buffer+4)+5,0)==-1)
-        perror("EOOR NOT SEND");
     int help;
-    if((help=recv(s,buffer_in,sizeof(buffer_in),0))== -1)
-        perror("ERROR AL RECIBIR");
-    buffer_in[help]=0;
-    printf("\n\nDATA : \n%s",buffer_in+4);
-
+    while(1){
+             printf("HOLA");
+        /////////DATOS RECIBIDOS
+        if((help=recv(s,buffer_in,sizeof(buffer_in),0))== -1)
+            perror("ERROR AL RECIBIR");
+        buffer_in[help]=0;
+        printf("\n\nDATA : \n%s\n",buffer_in+4);
+        
+        ///ENVIAMOS LO RECIBIDO
+        if(send(s,buffer_in,strlen(buffer_in+4)+5,0)==-1)
+            perror("ERROR NOT SEND");
+            printf(" %x%x%x%x ",(int)buffer_in[0],(int)buffer_in[1],(int)buffer_in[2],buffer_in[3]);
+            printf("%s\n",buffer_in+4);
+    
+        
+    }       
     WSACleanup();
 
 
-
+    system("pause");
     return 0;
 }
 
