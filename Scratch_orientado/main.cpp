@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     long int *ap;
     ap=(long int*)buffer;
-    sprintf(buffer+4,"broadcast \"Hola\"");
+    sprintf(buffer+4,"broadcast \"Hola q ase\"");
     *ap=htonl(strlen(buffer+4));
     //EL PROBLEMA ES QUE DETECTA COMO CARACTER VACIO LOS 3 PRIMEROS 000
     //printf(" %x%x%x%x ",(int)buffer[0],(int)buffer[1],(int)buffer[2],buffer[3]);
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         printf("\n\nDATA : \n%s\n",buffer_in+4);
         
         ///ENVIAMOS LO RECIBIDO
-        if(send(s,buffer_in,strlen(buffer_in+4)+5,0)==-1)
+        if(send(s,buffer_in,help,0)==-1)
             perror("ERROR NOT SEND");
             printf(" %x%x%x%x ",(int)buffer_in[0],(int)buffer_in[1],(int)buffer_in[2],buffer_in[3]);
             printf("%s\n",buffer_in+4);
