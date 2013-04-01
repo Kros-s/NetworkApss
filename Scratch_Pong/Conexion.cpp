@@ -23,34 +23,28 @@ void Conexion::Prepare(){
     Clocal.data.sin_addr.s_addr = inet_addr(Clocal.ipdest);
     Cremoto.data.sin_addr.s_addr = inet_addr(Cremoto.ipdest);
     //ESTABLECIENDO CONEXION LOCAL
+     if(connect(Clocal.s,(const sockaddr*)&Clocal.data,sizeof(Clocal.data))!=0)
+        perror("NO CONECTION ESTABLISHED");
+         if(connect(Cremoto.s,(const sockaddr*)&Cremoto.data,sizeof(Cremoto.data))!=0)
+        perror("NO CONECTION ESTABLISHED");
+    //ENVIANDO DATOS 
     int help;
-    if(connect(Clocal.s,(const sockaddr*)&Clocal.data,sizeof(Clocal.data))!=0)
-        perror("NO CONECTION ESTABLISHED");
-
-    if(connect(Cremoto.s,(const sockaddr*)&Cremoto.data,sizeof(Cremoto.data))!=0)
-        perror("NO CONECTION ESTABLISHED");
     while(1){
-
-
-    //if((help=recv(Clocal.s,Clocal.buffer_in,sizeof(Clocal.buffer_in),0))== -1)
-      //  perror("ERROR AL RECIBIR");
-    //Clocal.buffer_in[help]=0;
-    //printf("\n\nDATA LOCAL  : \n%s",Clocal.buffer_in+4);
-
-    // PERFECTO YA RECIBO DATOS :D
-    // VEAMOS AHORA EL SEGUNDO SOCKET
-    /*---INTENTAREMOS PRIMERO CON UN SOCKET LOCAL HACIENDO Q SE DUPLIQUE W */
-    //ESTABLECIENDO CONEXION REMOTA
-
-
-    if((help=recv(Cremoto.s,Cremoto.buffer_in,sizeof(Cremoto.buffer_in),0))== -1)
-        perror("ERROR AL RECIBIR");
-    Cremoto.buffer_in[help]=0;
-    printf("\n\nDATA REMOTO : \n%s",Cremoto.buffer_in+4);
-    //ENVIANDO x VIA REMOTA
-    memcpy(Clocal.buffer,Cremoto.buffer_in,1500);
-    printf("\n\nDATA ENVIO  : \n%s",Cremoto.buffer+4);
-    if(send(Clocal.s,Clocal.buffer,strlen(Clocal.buffer+4)+5,0)==-1)
-            perror("EOOR NOT SEND");
+        printf("\n\n---------------RECIBIENDO DATOS LOCALES----------");
+        /////////DATOS RECIBIDOS
+        if((help=recv(Clocal.s,Clocal.buffer_in,sizeof(Clocal.buffer_in),0))== -1)
+            perror("ERROR AL RECIBIR");
+        Clocal.buffer_in[help]=0;
+        printf("\n\nDATA : \n%s\n",Clocal.buffer_in+4);
+         ///ENVIAMOS LO RECIBIDO
+        //POR AHORA ESTAMOS ENVIANDO LO MISMO QUE RECIBIMOS 
+        printf("\n\n---------------ENVIANDO DATOS LOCALES----------");
+        if(send(Cremoto.s,Clocal.buffer_in,help,0)==-1)
+            perror("ERROR NOT SEND");
+            printf(" %x%x%x%x ",(int)Clocal.buffer_in[0],(int)Clocal.buffer_in[1],(int)Clocal.buffer_in[2],Clocal.buffer_in[3]);
+            printf("%s\n",Clocal.buffer_in+4);
+    /*ERROR AL RECIBIR CON SCRATCH LAS VARIABLES CADA UNA DE ELLAS TIENE QUE TENER SU PROPIO IDENTIFICADOR*/
+        
+               
     }
 }

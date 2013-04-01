@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
     }
     Conexion con;
     con.Conecta(Clocal,Cremoto);
-
     WSACleanup();
 
     return 0;
